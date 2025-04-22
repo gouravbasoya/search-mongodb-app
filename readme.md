@@ -9,5 +9,8 @@ This is a simple web app using **FastAPI**, **MongoDB Atlas**, and an HTML front
 - HTML + CSS frontend
 
 ## How to Run
+
+run index.html
 ```bash
 uvicorn main:app --reload
+
