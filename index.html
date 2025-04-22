@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      padding: 30px;
+    }
+    h2 {
+      text-align: center;
+    }
+    form {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .results {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin: 10px;
+      padding: 15px;
+      width: 250px;
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      color: #333;
+    }
+    .card p {
+      margin: 5px 0;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h2>Search for Products</h2>
+  <form id="searchForm">
+    <input type="text" id="searchInput" placeholder="Enter product name in English or Hindi..." required>
+    <button type="submit">Search</button>
+  </form>
+
+  <div class="results" id="resultsContainer"></div>
+
+  <script>
+    const form = document.getElementById("searchForm");
+    const input = document.getElementById("searchInput");
+    const resultsContainer = document.getElementById("resultsContainer");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      resultsContainer.innerHTML = "";
+
+      const query = input.value;
+      const res = await fetch(`http://127.0.0.1:8000/search?q=${encodeURIComponent(query)}`);
+      const data = await res.json();
+
+      if (data.results && data.results.length > 0) {
+        data.results.forEach(product => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <h3>${product.item_name}</h3>
+            <p><strong>Brand:</strong> ${product.brand_name}</p>
+            <p><strong>Price:</strong> ₹${product.price}</p>
+            <p><strong>Weight:</strong> ${product.kg} kg</p>
+            <p><strong>Category:</strong> ${product.category}</p>
+          `;
+          resultsContainer.appendChild(card);
+        });
+      } else {
+        resultsContainer.innerHTML = "<p>No matching products found.</p>";
+      }
+    });
+  </script>
+</body>
+</html>
