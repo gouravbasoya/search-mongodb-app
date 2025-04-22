@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 # MongoDB connection
-client = MongoClient("mongodb+srv://gouravbasoya3:6fU2JcfOWJ3FQUd3@grocery.ikbmetg.mongodb.net/")
+client = MongoClient("MONGODB URl")#
 db = client["groceries"]
 collection = db["products"]
 
